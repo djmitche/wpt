@@ -601,6 +601,11 @@ class MockRuntime {
           }
         }
 
+        let metricsRecorderPtr = new device.mojom.XRSessionMetricsRecorderPtr();
+        let metricsRecorderRequest = mojo.makeRequest(metricsRecorderPtr);
+        let metricsRecorderBinding = new mojo.Binding(
+            device.mojom.XRSessionMetricsRecorder, new MockXRSessionMetricsRecorder(), metricsRecorderRequest);
+
         return Promise.resolve({
           session: {
             submitFrameSink: submit_frame_sink,
@@ -608,6 +613,7 @@ class MockRuntime {
             clientReceiver: clientReceiver,
             displayInfo: this.displayInfo_,
             enabledFeatures: enabled_features,
+            metricsRecorder: metricsRecorderPtr,
           }
         });
       } else {
@@ -622,6 +628,12 @@ class MockRuntime {
           !options.immersive || this.displayInfo_.capabilities.canPresent
     });
   };
+}
+
+class MockXRSessionMetricsRecorder {
+  reportFeatureUsed(feature) {
+    // Do nothing
+  }
 }
 
 class MockXRInputSource {
