@@ -107,6 +107,10 @@ function createOpaqueRecord(buffer) {
   return createRecord('opaque', 'application/octet-stream', buffer);
 }
 
+function createUnknownRecord(buffer) {
+  return createRecord('unknown', '', buffer);
+}
+
 function createUrlRecord(url) {
   return createRecord('url', 'text/plain', url);
 }
