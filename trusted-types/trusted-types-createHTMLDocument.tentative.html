@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+  <script src="/resources/testharness.js"></script>
+  <script src="/resources/testharnessreport.js"></script>
+  <script src="/content-security-policy/support/testharness-helper.js"></script>
+  <meta http-equiv="Content-Security-Policy" content="trusted-types *">
+</head>
+<body>
+<script>
+
+test(t => {
+  function try_assign(doc) {
+    doc.createElement("script").textContent = "2+2";
+  }
+  assert_throws(new TypeError(),
+                _ => try_assign(document),
+                "Trusted Type assignment throws in main document");
+  assert_throws(new TypeError(),
+                _ => try_assign(document.implementation.createHTMLDocument('')),
+                "Trusted Type assignment throws in created document");
+}, "Trusted Types work in createHTMLDocument");
+
+</script>
+</body>
